@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import './BasicController.less';
-import {Button, Form, InputNumber, message, Switch} from 'antd';
+import {Button, Card, Form, InputNumber, message, Switch} from 'antd';
 import AngleController from '../control/AngleController';
-import {postAngleAndSpeed, startOrStop} from '../api/BasicControlApi';
+import {postAngleAndSpeed, runAllDirTest, startOrStop} from '../api/BasicControlApi';
 
 const MAX_SPEED = 1000;
 
@@ -12,6 +12,8 @@ class BasicController extends Component {
         this.state = {
             angle: 0,
             speed: 0,
+            allDirTestSpeed: 0,
+            allDirTestStepDelay: 0,
         };
         this.canvas = null;
         this.form = null;
@@ -56,8 +58,15 @@ class BasicController extends Component {
         });
     }
 
+    allDirTest() {
+        const {allDirTestSpeed, allDirTestStepDelay} = this.state;
+        runAllDirTest(allDirTestSpeed, allDirTestStepDelay).then(res => {
+            message.info('启动成功');
+        });
+    }
+
     render() {
-        const {angle, speed} = this.state;
+        const {angle, speed, allDirTestSpeed, allDirTestStepDelay} = this.state;
         return (
             <div className="basic">
                 <canvas width="500" height="500" ref={canvas => this.onCanvasBind(canvas)}/>
@@ -78,7 +87,13 @@ class BasicController extends Component {
                             </Button>
                         </Form.Item>
                     </Form>
-
+                    <Card>
+                        <InputNumber value={allDirTestSpeed}
+                                     onChange={text => this.setState({allDirTestSpeed: text})}>速度</InputNumber>
+                        <InputNumber value={allDirTestStepDelay}
+                                     onChange={text => this.setState({allDirTestStepDelay: text})}>步进延时</InputNumber>
+                        <Button type="primary" onClick={() => this.allDirTest()}>全向行走测试</Button>
+                    </Card>
                 </div>
             </div>
         );

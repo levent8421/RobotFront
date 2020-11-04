@@ -17,3 +17,14 @@ export const startOrStop = state => {
         },
     });
 };
+
+export const runAllDirTest = (speed, stepDelay) => {
+    return request({
+        url: '/api/basic/_all-dir-test',
+        method: 'post',
+        data: {
+            speed: speed,
+            stepDelay: stepDelay,
+        }
+    });
+};

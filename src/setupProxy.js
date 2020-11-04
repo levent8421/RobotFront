@@ -3,7 +3,7 @@ console.log(createProxyMiddleware, typeof (createProxyMiddleware));
 module.exports = function (app) {
     app.use(
         createProxyMiddleware("/api/", {
-            target: "http://127.0.0.1:9001/",
+            target: "http://192.168.2.102:9001/",
             changeOrigin: true
         })
     );
